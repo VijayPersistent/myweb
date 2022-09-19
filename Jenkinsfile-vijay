@@ -18,8 +18,6 @@ pipeline{
                     sshagent(['tomcat-cred']) {
                     sh '''
                         scp -o StrictHostKeyChecking=no target/myweb.war ubuntu@172.31.89.79:/usr/local/tomcat8/webapps/
-                        ssh ubuntu@172.31.89.79 systemctl stop tomcat
-                        ssh ubuntu@172.31.89.79 systemctl start tomcat
 
                         '''
 
