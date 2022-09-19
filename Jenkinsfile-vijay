@@ -10,6 +10,21 @@ pipeline{
             stage("maven Build"){
                 steps{
                     sh 'mvn clean package'
+                    sh 'mv target/*.war target/myweb.war'
+                }
+            }
+            stage("Deploy-Dev"){
+                steps{
+                    sshagent(['tomcat-cred']) {
+                    sh '''
+                        scp -o StrictHostKeyChecking=no target/myweb.war ubuntu@172.31.89.79:/usr/local/tomcat8/webapps/
+                        ssh ubuntu@172.31.89.79 systemctl stop tomcat
+                        ssh ubuntu@172.31.89.79 systemctl start tomcat
+
+                        '''
+
+                }
+                
                 }
             }
             
